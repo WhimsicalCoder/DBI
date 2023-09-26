@@ -8,11 +8,26 @@
         }
 
         .container {
-            max-width: 400px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
         }
     </style>
 </head>
@@ -45,9 +60,23 @@
 
         <button id="calculatePace">Calculate Pacing</button>
 
-        <div id="pacingResult">
-            <!-- Pacing result will be displayed here -->
-        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Campaign Name</th>
+                    <th>Campaign Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Total Budget ($)</th>
+                    <th>Booked Impressions</th>
+                    <th>Today's Budget Pace (%)</th>
+                    <th>Today's Impression Pace (%)</th>
+                </tr>
+            </thead>
+            <tbody id="campaignData">
+                <!-- Campaign data will be displayed here -->
+            </tbody>
+        </table>
     </div>
 
     <script>
@@ -71,14 +100,28 @@
             const budgetPace = (currentSpend / totalBudget) * 100;
             const impressionPace = (currentImpressions / bookedImpressions) * 100;
 
-            const pacingResult = document.getElementById('pacingResult');
-            pacingResult.innerHTML = `
-                <p>Campaign Name: ${campaignName}</p>
-                <p>Campaign Type: ${campaignType}</p>
-                <p>Today's Budget Pace: ${budgetPace.toFixed(2)}%</p>
-                <p>Today's Impression Pace: ${impressionPace.toFixed(2)}%</p>
-                <p>Days Elapsed: ${daysElapsed}</p>
+            const campaignData = document.getElementById('campaignData');
+            const newRow = campaignData.insertRow(-1);
+            newRow.innerHTML = `
+                <td>${campaignName}</td>
+                <td>${campaignType}</td>
+                <td>${startDate.toDateString()}</td>
+                <td>${endDate.toDateString()}</td>
+                <td>$${totalBudget.toFixed(2)}</td>
+                <td>${bookedImpressions}</td>
+                <td>${budgetPace.toFixed(2)}%</td>
+                <td>${impressionPace.toFixed(2)}%</td>
             `;
+
+            // Clear input fields
+            document.getElementById('campaignName').value = '';
+            document.getElementById('campaignType').value = '';
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
+            document.getElementById('totalBudget').value = '';
+            document.getElementById('bookedImpressions').value = '';
+            document.getElementById('currentSpend').value = '';
+            document.getElementById('currentImpressions').value = '';
         });
     </script>
 </body>
