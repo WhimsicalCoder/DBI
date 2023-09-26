@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Campaign Tool</title>
+    <title>Campaign Pacing Tool</title>
     <style>
         /* Add some basic styling */
         body {
@@ -19,46 +19,41 @@
 </head>
 <body>
     <div class="container">
-        <h1>Campaign Tool</h1>
-        <label for="campaignName">Campaign Name:</label>
-        <input type="text" id="campaignName" placeholder="Campaign Name">
+        <h1>Campaign Pacing Tool</h1>
+        <label for="campaignID">Campaign ID:</label>
+        <input type="text" id="campaignID" placeholder="Campaign ID">
 
-        <label for="totalBudget">Total Budget ($):</label>
-        <input type="number" id="totalBudget" placeholder="Total Budget">
+        <button id="fetchPacingData">Fetch Today's Pacing</button>
 
-        <label for="bookedImpressions">Booked Impressions:</label>
-        <input type="number" id="bookedImpressions" placeholder="Booked Impressions">
-
-        <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate">
-
-        <label for="endDate">End Date:</label>
-        <input type="date" id="endDate">
-
-        <button id="calculateCPM">Calculate CPM</button>
-
-        <div id="result"></div>
+        <div id="pacingData">
+            <!-- Pacing data will be displayed here -->
+        </div>
     </div>
 
     <script>
-        document.getElementById('calculateCPM').addEventListener('click', function() {
-            const campaignName = document.getElementById('campaignName').value;
-            const totalBudget = parseFloat(document.getElementById('totalBudget').value);
-            const bookedImpressions = parseFloat(document.getElementById('bookedImpressions').value);
-            const startDate = new Date(document.getElementById('startDate').value);
-            const endDate = new Date(document.getElementById('endDate').value);
+        document.getElementById('fetchPacingData').addEventListener('click', function() {
+            const campaignID = document.getElementById('campaignID').value;
 
-            if (!campaignName || isNaN(totalBudget) || isNaN(bookedImpressions) || isNaN(startDate) || isNaN(endDate)) {
-                alert('Please fill in all the fields with valid data.');
+            if (!campaignID) {
+                alert('Please enter a Campaign ID.');
                 return;
             }
 
-            const cpm = (totalBudget / bookedImpressions) * 1000;
+            // Simulate fetching today's pacing data from a server (replace with actual API call)
+            const todayPacingData = {
+                budgetSpent: 3500,
+                impressionsDelivered: 75000,
+                dailyBudgetPacing: 5000,
+                dailyImpressionPacing: 100000,
+            };
 
-            const resultContainer = document.getElementById('result');
-            resultContainer.innerHTML = `
-                <p>Campaign Name: ${campaignName}</p>
-                <p>Cost Per Mille (CPM): $${cpm.toFixed(2)}</p>
+            const pacingDataContainer = document.getElementById('pacingData');
+            pacingDataContainer.innerHTML = `
+                <p>Campaign ID: ${campaignID}</p>
+                <p>Budget Spent: $${todayPacingData.budgetSpent.toFixed(2)}</p>
+                <p>Impressions Delivered: ${todayPacingData.impressionsDelivered}</p>
+                <p>Daily Budget Pacing: $${todayPacingData.dailyBudgetPacing.toFixed(2)}</p>
+                <p>Daily Impression Pacing: ${todayPacingData.dailyImpressionPacing}</p>
             `;
         });
     </script>
