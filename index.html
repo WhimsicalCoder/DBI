@@ -37,6 +37,12 @@
         <label for="bookedImpressions">Booked Impressions:</label>
         <input type="number" id="bookedImpressions" placeholder="Booked Impressions">
 
+        <label for="currentSpend">Current Spend ($):</label>
+        <input type="number" id="currentSpend" placeholder="Current Spend">
+
+        <label for="currentImpressions">Current Impressions:</label>
+        <input type="number" id="currentImpressions" placeholder="Current Impressions">
+
         <button id="calculatePace">Calculate Pacing</button>
 
         <div id="pacingResult">
@@ -52,33 +58,26 @@
             const endDate = new Date(document.getElementById('endDate').value);
             const totalBudget = parseFloat(document.getElementById('totalBudget').value);
             const bookedImpressions = parseFloat(document.getElementById('bookedImpressions').value);
+            const currentSpend = parseFloat(document.getElementById('currentSpend').value);
+            const currentImpressions = parseFloat(document.getElementById('currentImpressions').value);
 
-            if (!campaignName || !campaignType || isNaN(totalBudget) || isNaN(bookedImpressions) || isNaN(startDate) || isNaN(endDate)) {
+            if (!campaignName || !campaignType || isNaN(totalBudget) || isNaN(bookedImpressions) || isNaN(startDate) || isNaN(endDate) || isNaN(currentSpend) || isNaN(currentImpressions)) {
                 alert('Please fill in all the fields with valid data.');
                 return;
             }
 
-            // Simulate getting today's date
             const todayDate = new Date();
-
-            // Prompt user for current spend and impressions
-            const currentSpend = parseFloat(prompt('Enter current spend ($):'));
-            const currentImpressions = parseFloat(prompt('Enter current impressions:'));
-
-            if (isNaN(currentSpend) || isNaN(currentImpressions)) {
-                alert('Please enter valid current spend and impressions.');
-                return;
-            }
-
-            const budgetPace = (currentSpend / ((todayDate - startDate) / (endDate - startDate)) / totalBudget) * 100;
-            const impressionPace = (currentImpressions / ((todayDate - startDate) / (endDate - startDate)) / bookedImpressions) * 100;
+            const daysElapsed = (todayDate - startDate) / (1000 * 60 * 60 * 24);
+            const budgetPace = (currentSpend / totalBudget) * 100;
+            const impressionPace = (currentImpressions / bookedImpressions) * 100;
 
             const pacingResult = document.getElementById('pacingResult');
             pacingResult.innerHTML = `
                 <p>Campaign Name: ${campaignName}</p>
                 <p>Campaign Type: ${campaignType}</p>
-                <p>Budget Pace: ${budgetPace.toFixed(2)}%</p>
-                <p>Impression Pace: ${impressionPace.toFixed(2)}%</p>
+                <p>Today's Budget Pace: ${budgetPace.toFixed(2)}%</p>
+                <p>Today's Impression Pace: ${impressionPace.toFixed(2)}%</p>
+                <p>Days Elapsed: ${daysElapsed}</p>
             `;
         });
     </script>
