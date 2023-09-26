@@ -1,48 +1,66 @@
-import datetime
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Campaign Tool</title>
+    <style>
+        /* Add some basic styling */
+        body {
+            font-family: Arial, sans-serif;
+        }
 
-# Function to calculate the cost per mille (CPM)
-def calculate_cpm(budget, impressions):
-    return (budget / impressions) * 1000
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Campaign Tool</h1>
+        <label for="campaignName">Campaign Name:</label>
+        <input type="text" id="campaignName" placeholder="Campaign Name">
 
-# Function to calculate budget and impression pacing
-def calculate_pacing(current_spend, current_impressions, start_date, end_date, total_budget, booked_impressions):
-    current_date = datetime.datetime.now()
-    days_elapsed = (current_date - start_date).days
-    days_remaining = (end_date - current_date).days
-    budget_spent = current_spend
-    impressions_delivered = current_impressions
+        <label for="totalBudget">Total Budget ($):</label>
+        <input type="number" id="totalBudget" placeholder="Total Budget">
 
-    remaining_budget = total_budget - budget_spent
-    remaining_impressions = booked_impressions - impressions_delivered
-    daily_budget = remaining_budget / days_remaining
-    daily_impressions = remaining_impressions / days_remaining
+        <label for="bookedImpressions">Booked Impressions:</label>
+        <input type="number" id="bookedImpressions" placeholder="Booked Impressions">
 
-    return remaining_budget, remaining_impressions, daily_budget, daily_impressions
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate">
 
-# User input
-campaign_name = input("Campaign Name: ")
-total_budget = float(input("Total Budget: $"))
-booked_impressions = float(input("Booked Impressions: "))
-start_date = datetime.datetime.strptime(input("Start Date (YYYY-MM-DD): "), "%Y-%m-%d")
-end_date = datetime.datetime.strptime(input("End Date (YYYY-MM-DD): "), "%Y-%m-%d")
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate">
 
-# Calculate CPM
-cpm = calculate_cpm(total_budget, booked_impressions)
+        <button id="calculateCPM">Calculate CPM</button>
 
-print(f"Cost Per Mille (CPM): ${cpm:.2f}")
+        <div id="result"></div>
+    </div>
 
-while True:
-    current_spend = float(input("Current Spend: $"))
-    current_impressions = float(input("Current Impressions: "))
+    <script>
+        document.getElementById('calculateCPM').addEventListener('click', function() {
+            const campaignName = document.getElementById('campaignName').value;
+            const totalBudget = parseFloat(document.getElementById('totalBudget').value);
+            const bookedImpressions = parseFloat(document.getElementById('bookedImpressions').value);
+            const startDate = new Date(document.getElementById('startDate').value);
+            const endDate = new Date(document.getElementById('endDate').value);
 
-    remaining_budget, remaining_impressions, daily_budget, daily_impressions = calculate_pacing(
-        current_spend, current_impressions, start_date, end_date, total_budget, booked_impressions)
+            if (!campaignName || isNaN(totalBudget) || isNaN(bookedImpressions) || isNaN(startDate) || isNaN(endDate)) {
+                alert('Please fill in all the fields with valid data.');
+                return;
+            }
 
-    print(f"Remaining Budget: ${remaining_budget:.2f}")
-    print(f"Remaining Impressions: {remaining_impressions}")
-    print(f"Daily Budget Pacing: ${daily_budget:.2f}")
-    print(f"Daily Impression Pacing: {daily_impressions}")
+            const cpm = (totalBudget / bookedImpressions) * 1000;
 
-    continue_input = input("Do you want to input more data (Y/N)? ").strip().lower()
-    if continue_input != "y":
-        break
+            const resultContainer = document.getElementById('result');
+            resultContainer.innerHTML = `
+                <p>Campaign Name: ${campaignName}</p>
+                <p>Cost Per Mille (CPM): $${cpm.toFixed(2)}</p>
+            `;
+        });
+    </script>
+</body>
+</html>
