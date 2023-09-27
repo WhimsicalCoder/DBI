@@ -48,7 +48,34 @@
     <div class="container">
         <h2>Ad Campaign Pacing Tool</h2>
         <form id="campaignForm">
-            <!-- Your form inputs here as in the previous code -->
+            <label for="campaignName">Campaign Name:</label>
+            <input type="text" id="campaignName" required><br>
+
+            <label for="campaignType">Campaign Type:</label>
+            <input type="text" id="campaignType" required><br>
+
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" required><br>
+
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" required><br>
+
+            <label for="totalBudget">Total Budget ($):</label>
+            <input type="number" id="totalBudget" required><br>
+
+            <label for="bookedImpressions">Booked Impressions:</label>
+            <input type="number" id="bookedImpressions" required><br>
+
+            <label for="cpm">CPM ($):</label>
+            <input type="number" id="cpm" required><br>
+
+            <label for="currentSpend">Current Spend ($):</label>
+            <input type="number" id="currentSpend" required><br>
+
+            <label for="currentImpressions">Current Impressions:</label>
+            <input type="number" id="currentImpressions" required><br>
+
+            <button type="button" onclick="addCampaign()">Add Campaign</button>
         </form>
 
         <h2>Current Campaigns</h2>
@@ -76,7 +103,19 @@
     </div>
 
     <script>
-        // The JavaScript code as in the previous response
-    </script>
-</body>
-</html>
+        function addCampaign() {
+            const campaignName = document.getElementById('campaignName').value;
+            const campaignType = document.getElementById('campaignType').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const totalBudget = parseFloat(document.getElementById('totalBudget').value);
+            const bookedImpressions = parseInt(document.getElementById('bookedImpressions').value);
+            const cpm = parseFloat(document.getElementById('cpm').value);
+            const currentSpend = parseFloat(document.getElementById('currentSpend').value);
+            const currentImpressions = parseInt(document.getElementById('currentImpressions').value);
+
+            // Calculate today's date
+            const today = new Date().toISOString().split('T')[0];
+
+            // Calculate the number of days elapsed
+            const startDateObj = new Date(startDate
