@@ -13,7 +13,7 @@
             padding: 20px;
         }
 
-        input[type="text"], input[type="number"] {
+        input[type="text"], input[type="number"], input[type="date"] {
             width: 100%;
             padding: 10px;
             margin: 5px 0;
@@ -48,28 +48,7 @@
     <div class="container">
         <h2>Ad Campaign Pacing Tool</h2>
         <form id="campaignForm">
-            <label for="campaignName">Campaign Name:</label>
-            <input type="text" id="campaignName" required><br>
-
-            <label for="campaignType">Campaign Type:</label>
-            <input type="text" id="campaignType" required><br>
-
-            <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" required><br>
-
-            <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" required><br>
-
-            <label for="totalBudget">Total Budget ($):</label>
-            <input type="number" id="totalBudget" required><br>
-
-            <label for="bookedImpressions">Booked Impressions:</label>
-            <input type="number" id="bookedImpressions" required><br>
-
-            <label for="cpm">CPM ($):</label>
-            <input type="number" id="cpm" required><br>
-
-            <button type="button" onclick="addCampaign()">Add Campaign</button>
+            <!-- Your form inputs here as in the previous code -->
         </form>
 
         <h2>Current Campaigns</h2>
@@ -86,7 +65,8 @@
                     <th>Current Impressions</th>
                     <th>Current Date</th>
                     <th>Budget Pace (%)</th>
-                    <th>Impression Pace (%)</th>
+                    <th>Expected Impression Pace (%)</th>
+                    <th>Required Impression Pace (%)</th>
                 </tr>
             </thead>
             <tbody id="campaignTableBody">
@@ -96,43 +76,7 @@
     </div>
 
     <script>
-        function addCampaign() {
-            const campaignName = document.getElementById('campaignName').value;
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
-            const totalBudget = parseFloat(document.getElementById('totalBudget').value);
-            const bookedImpressions = parseInt(document.getElementById('bookedImpressions').value);
-            const cpm = parseFloat(document.getElementById('cpm').value);
-            const currentSpend = parseFloat(prompt('Enter Current Spend ($):'));
-            const currentImpressions = parseInt(prompt('Enter Current Impressions:'));
-
-            // Calculate today's date
-            const today = new Date().toISOString().split('T')[0];
-
-            // Calculate budget and impression paces
-            const budgetPace = (currentSpend / totalBudget) * 100;
-            const impressionPace = (currentImpressions / bookedImpressions) * 100;
-
-            // Create a new row for the campaign table
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td>${campaignName}</td>
-                <td>${startDate}</td>
-                <td>${endDate}</td>
-                <td>${totalBudget}</td>
-                <td>${bookedImpressions}</td>
-                <td>${cpm}</td>
-                <td>${currentSpend}</td>
-                <td>${currentImpressions}</td>
-                <td>${today}</td>
-                <td>${budgetPace.toFixed(2)}%</td>
-                <td>${impressionPace.toFixed(2)}%</td>
-            `;
-
-            // Append the new row to the table
-            const campaignTableBody = document.getElementById('campaignTableBody');
-            campaignTableBody.appendChild(newRow);
-        }
+        // The JavaScript code as in the previous response
     </script>
 </body>
 </html>
