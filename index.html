@@ -8,121 +8,131 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 600px;
             margin: 0 auto;
             padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        table, th, td {
-            border: 1px solid #ccc;
+            margin-top: 20px;
         }
 
         th, td {
+            border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Ad Campaign Pacing Tool</h1>
-        <label for="campaignName">Campaign Name:</label>
-        <input type="text" id="campaignName" placeholder="Campaign Name">
+        <h2>Ad Campaign Pacing Tool</h2>
+        <form id="campaignForm">
+            <label for="campaignName">Campaign Name:</label>
+            <input type="text" id="campaignName" required><br>
 
-        <label for="campaignType">Campaign Type:</label>
-        <input type="text" id="campaignType" placeholder="Campaign Type">
+            <label for="campaignType">Campaign Type:</label>
+            <input type="text" id="campaignType" required><br>
 
-        <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" required><br>
 
-        <label for="endDate">End Date:</label>
-        <input type="date" id="endDate">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" required><br>
 
-        <label for="totalBudget">Total Budget ($):</label>
-        <input type="number" id="totalBudget" placeholder="Total Budget">
+            <label for="totalBudget">Total Budget ($):</label>
+            <input type="number" id="totalBudget" required><br>
 
-        <label for="bookedImpressions">Booked Impressions:</label>
-        <input type="number" id="bookedImpressions" placeholder="Booked Impressions">
+            <label for="bookedImpressions">Booked Impressions:</label>
+            <input type="number" id="bookedImpressions" required><br>
 
-        <label for="currentSpend">Current Spend ($):</label>
-        <input type="number" id="currentSpend" placeholder="Current Spend">
+            <label for="cpm">CPM ($):</label>
+            <input type="number" id="cpm" required><br>
 
-        <label for="currentImpressions">Current Impressions:</label>
-        <input type="number" id="currentImpressions" placeholder="Current Impressions">
+            <button type="button" onclick="addCampaign()">Add Campaign</button>
+        </form>
 
-        <button id="calculatePace">Calculate Pacing</button>
-
+        <h2>Current Campaigns</h2>
         <table>
             <thead>
                 <tr>
                     <th>Campaign Name</th>
-                    <th>Campaign Type</th>
                     <th>Start Date</th>
                     <th>End Date</th>
-                    <th>Total Budget ($)</th>
+                    <th>Total Budget</th>
                     <th>Booked Impressions</th>
-                    <th>Today's Budget Pace (%)</th>
-                    <th>Today's Impression Pace (%)</th>
+                    <th>CPM</th>
+                    <th>Current Spend</th>
+                    <th>Current Impressions</th>
+                    <th>Current Date</th>
+                    <th>Budget Pace (%)</th>
+                    <th>Impression Pace (%)</th>
                 </tr>
             </thead>
-            <tbody id="campaignData">
+            <tbody id="campaignTableBody">
                 <!-- Campaign data will be displayed here -->
             </tbody>
         </table>
     </div>
 
     <script>
-        document.getElementById('calculatePace').addEventListener('click', function() {
+        function addCampaign() {
             const campaignName = document.getElementById('campaignName').value;
-            const campaignType = document.getElementById('campaignType').value;
-            const startDate = new Date(document.getElementById('startDate').value);
-            const endDate = new Date(document.getElementById('endDate').value);
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
             const totalBudget = parseFloat(document.getElementById('totalBudget').value);
-            const bookedImpressions = parseFloat(document.getElementById('bookedImpressions').value);
-            const currentSpend = parseFloat(document.getElementById('currentSpend').value);
-            const currentImpressions = parseFloat(document.getElementById('currentImpressions').value);
+            const bookedImpressions = parseInt(document.getElementById('bookedImpressions').value);
+            const cpm = parseFloat(document.getElementById('cpm').value);
+            const currentSpend = parseFloat(prompt('Enter Current Spend ($):'));
+            const currentImpressions = parseInt(prompt('Enter Current Impressions:'));
 
-            if (!campaignName || !campaignType || isNaN(totalBudget) || isNaN(bookedImpressions) || isNaN(startDate) || isNaN(endDate) || isNaN(currentSpend) || isNaN(currentImpressions)) {
-                alert('Please fill in all the fields with valid data.');
-                return;
-            }
+            // Calculate today's date
+            const today = new Date().toISOString().split('T')[0];
 
-            const todayDate = new Date();
-            const daysElapsed = (todayDate - startDate) / (1000 * 60 * 60 * 24);
+            // Calculate budget and impression paces
             const budgetPace = (currentSpend / totalBudget) * 100;
             const impressionPace = (currentImpressions / bookedImpressions) * 100;
 
-            const campaignData = document.getElementById('campaignData');
-            const newRow = campaignData.insertRow(-1);
+            // Create a new row for the campaign table
+            const newRow = document.createElement('tr');
             newRow.innerHTML = `
                 <td>${campaignName}</td>
-                <td>${campaignType}</td>
-                <td>${startDate.toDateString()}</td>
-                <td>${endDate.toDateString()}</td>
-                <td>$${totalBudget.toFixed(2)}</td>
+                <td>${startDate}</td>
+                <td>${endDate}</td>
+                <td>${totalBudget}</td>
                 <td>${bookedImpressions}</td>
+                <td>${cpm}</td>
+                <td>${currentSpend}</td>
+                <td>${currentImpressions}</td>
+                <td>${today}</td>
                 <td>${budgetPace.toFixed(2)}%</td>
                 <td>${impressionPace.toFixed(2)}%</td>
             `;
 
-            // Clear input fields
-            document.getElementById('campaignName').value = '';
-            document.getElementById('campaignType').value = '';
-            document.getElementById('startDate').value = '';
-            document.getElementById('endDate').value = '';
-            document.getElementById('totalBudget').value = '';
-            document.getElementById('bookedImpressions').value = '';
-            document.getElementById('currentSpend').value = '';
-            document.getElementById('currentImpressions').value = '';
-        });
+            // Append the new row to the table
+            const campaignTableBody = document.getElementById('campaignTableBody');
+            campaignTableBody.appendChild(newRow);
+        }
     </script>
 </body>
 </html>
