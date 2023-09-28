@@ -42,12 +42,6 @@
     <label for="campaignName">Campaign Name:</label>
     <input type="text" id="campaignName" placeholder="Enter campaign name">
 
-    <label for="campaignType">Campaign Type:</label>
-    <select id="campaignType">
-        <option value="Disclosed">Disclosed</option>
-        <option value="Non-Disclosed">Non-Disclosed</option>
-    </select>
-
     <label for="startDate">Start Date:</label>
     <input type="date" id="startDate" placeholder="Select start date">
 
@@ -57,25 +51,13 @@
     <label for="totalBudget">Total Budget ($):</label>
     <input type="number" id="totalBudget" placeholder="Enter total budget">
 
-    <label for="bookedImpressions">Booked Impressions:</label>
-    <input type="number" id="bookedImpressions" placeholder="Enter booked impressions">
-
-    <label for="bookedCPM">Booked CPM ($):</label>
-    <input type="number" id="bookedCPM" placeholder="Enter booked CPM">
-
-    <label for="currentSpend">Current Spend ($):</label>
-    <input type="number" id="currentSpend" placeholder="Enter current spend">
-
-    <label for="currentImpressions">Current Impressions:</label>
-    <input type="number" id="currentImpressions" placeholder="Enter current impressions">
+    <label for="pacingPeriod">Pacing Period (in days):</label>
+    <input type="number" id="pacingPeriod" placeholder="Enter pacing period in days">
 
     <button onclick="calculatePacing()">Calculate Pacing</button>
 
     <div id="results">
         <h3>Results:</h3>
-        <p id="impressionsPacing">Impressions Pacing Percentage: </p>
-        <p id="budgetPacing">Budget Pacing Percentage: </p>
-        <p id="remainingDays">Remaining Days: </p>
         <p id="dailyBudget">Daily Budget: </p>
         <p id="dailyImpressionsTarget">Daily Impressions Target: </p>
     </div>
@@ -83,33 +65,17 @@
     <script>
         function calculatePacing() {
             var campaignName = document.getElementById('campaignName').value;
-            var campaignType = document.getElementById('campaignType').value;
             var startDate = new Date(document.getElementById('startDate').value);
             var endDate = new Date(document.getElementById('endDate').value);
             var totalBudget = parseFloat(document.getElementById('totalBudget').value);
-            var bookedImpressions = parseFloat(document.getElementById('bookedImpressions').value);
-            var bookedCPM = parseFloat(document.getElementById('bookedCPM').value);
-            var currentSpend = parseFloat(document.getElementById('currentSpend').value);
-            var currentImpressions = parseFloat(document.getElementById('currentImpressions').value);
+            var pacingPeriod = parseInt(document.getElementById('pacingPeriod').value);
 
-            // Calculate pacing percentages
-            var impressionsPacingPercentage = (currentImpressions / bookedImpressions) * 100;
-            var budgetPacingPercentage = (currentSpend / totalBudget) * 100;
-
-            // Calculate remaining days
-            var currentDate = new Date();
-            var daysElapsed = Math.ceil((currentDate - startDate) / (1000 * 60 * 60 * 24));
+            // Calculate pacing
             var totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-            var remainingDays = totalDays - daysElapsed;
-
-            // Calculate daily budget and daily impressions target
             var dailyBudget = totalBudget / totalDays;
-            var dailyImpressionsTarget = bookedImpressions / totalDays;
+            var dailyImpressionsTarget = totalBudget / pacingPeriod;
 
             // Display results
-            document.getElementById('impressionsPacing').innerText = 'Impressions Pacing Percentage: ' + impressionsPacingPercentage.toFixed(2) + '%';
-            document.getElementById('budgetPacing').innerText = 'Budget Pacing Percentage: ' + budgetPacingPercentage.toFixed(2) + '%';
-            document.getElementById('remainingDays').innerText = 'Remaining Days: ' + remainingDays;
             document.getElementById('dailyBudget').innerText = 'Daily Budget: $' + dailyBudget.toFixed(2);
             document.getElementById('dailyImpressionsTarget').innerText = 'Daily Impressions Target: ' + dailyImpressionsTarget.toFixed(2);
         }
