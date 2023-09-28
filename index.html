@@ -45,6 +45,15 @@
     <label for="currentImpressions">Current Impressions:</label>
     <input type="number" id="currentImpressions" placeholder="Enter current impressions">
 
+    <label for="totalBudget">Total Budget ($):</label>
+    <input type="number" id="totalBudget" placeholder="Enter total budget">
+
+    <label for="bookedImpressions">Booked Impressions:</label>
+    <input type="number" id="bookedImpressions" placeholder="Enter booked impressions">
+
+    <label for="bookedCPM">Booked CPM:</label>
+    <input type="number" id="bookedCPM" placeholder="Enter booked CPM">
+
     <button onclick="calculatePacing()">Calculate Pacing</button>
 
     <div id="results">
@@ -57,15 +66,16 @@
         function calculatePacing() {
             var currentSpend = parseFloat(document.getElementById('currentSpend').value);
             var currentImpressions = parseFloat(document.getElementById('currentImpressions').value);
-            var totalBudget = 10000; // Set your total budget here
-            var bookedCPM = 2; // Set your booked CPM here
+            var totalBudget = parseFloat(document.getElementById('totalBudget').value);
+            var bookedImpressions = parseFloat(document.getElementById('bookedImpressions').value);
+            var bookedCPM = parseFloat(document.getElementById('bookedCPM').value);
 
             // Calculate expected impressions based on current spend and booked CPM
             var expectedImpressions = (currentSpend / bookedCPM) * 1000;
 
             // Calculate pacing percentages
             var budgetPacingPercentage = (currentSpend / totalBudget) * 100;
-            var impressionsPacingPercentage = (currentImpressions / expectedImpressions) * 100;
+            var impressionsPacingPercentage = (currentImpressions / bookedImpressions) * 100;
 
             // Display results
             document.getElementById('budgetPacing').innerText = 'Budget Pacing Percentage: ' + budgetPacingPercentage.toFixed(2) + '%';
