@@ -76,6 +76,8 @@
         <p id="impressionsPacing">Impressions Pacing Percentage: </p>
         <p id="budgetPacing">Budget Pacing Percentage: </p>
         <p id="remainingDays">Remaining Days: </p>
+        <p id="dailyBudget">Daily Budget: </p>
+        <p id="dailyImpressionsTarget">Daily Impressions Target: </p>
     </div>
 
     <script>
@@ -100,10 +102,16 @@
             var totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
             var remainingDays = totalDays - daysElapsed;
 
+            // Calculate daily budget and daily impressions target
+            var dailyBudget = totalBudget / totalDays;
+            var dailyImpressionsTarget = bookedImpressions / totalDays;
+
             // Display results
             document.getElementById('impressionsPacing').innerText = 'Impressions Pacing Percentage: ' + impressionsPacingPercentage.toFixed(2) + '%';
             document.getElementById('budgetPacing').innerText = 'Budget Pacing Percentage: ' + budgetPacingPercentage.toFixed(2) + '%';
             document.getElementById('remainingDays').innerText = 'Remaining Days: ' + remainingDays;
+            document.getElementById('dailyBudget').innerText = 'Daily Budget: $' + dailyBudget.toFixed(2);
+            document.getElementById('dailyImpressionsTarget').innerText = 'Daily Impressions Target: ' + dailyImpressionsTarget.toFixed(2);
         }
     </script>
 
