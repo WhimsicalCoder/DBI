@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Campaign Pacing Tool</title>
+    <title>Daily Pacing Tool</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -33,11 +33,20 @@
         #results {
             margin-top: 20px;
         }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <h2>Daily Campaign Pacing Tool</h2>
+    <h2>Daily Pacing Tool</h2>
 
     <label for="campaignName">Campaign Name:</label>
     <input type="text" id="campaignName" placeholder="Enter campaign name">
@@ -51,38 +60,5 @@
     <label for="totalBudget">Total Budget ($):</label>
     <input type="number" id="totalBudget" placeholder="Enter total budget">
 
-    <button onclick="calculateDailyPacing()">Calculate Daily Pacing</button>
-
-    <div id="results">
-        <h3>Daily Pacing Results:</h3>
-        <ul id="dailyPacingList"></ul>
-    </div>
-
-    <script>
-        function calculateDailyPacing() {
-            var campaignName = document.getElementById('campaignName').value;
-            var startDate = new Date(document.getElementById('startDate').value);
-            var endDate = new Date(document.getElementById('endDate').value);
-            var totalBudget = parseFloat(document.getElementById('totalBudget').value);
-
-            // Calculate daily pacing
-            var totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-            var dailyBudget = totalBudget / totalDays;
-
-            // Display daily pacing results
-            var dailyPacingList = document.getElementById('dailyPacingList');
-            dailyPacingList.innerHTML = '';
-
-            for (var i = 0; i < totalDays; i++) {
-                var currentDate = new Date(startDate);
-                currentDate.setDate(startDate.getDate() + i);
-
-                var listItem = document.createElement('li');
-                listItem.innerHTML = `<strong>${currentDate.toDateString()}:</strong> Daily Budget: $${dailyBudget.toFixed(2)}`;
-                dailyPacingList.appendChild(listItem);
-            }
-        }
-    </script>
-
-</body>
-</html>
+    <label for="pacingPeriod">Pacing Period (in days):</label>
+    <input type="number" id="pacingPeriod" placeholder="
