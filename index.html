@@ -1,111 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campaign Pacing Tool</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+<!-- ... (previous HTML code) ... -->
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
+<script>
+    function calculatePacing() {
+        var campaignName = document.getElementById('campaignName').value;
+        var campaignType = document.getElementById('campaignType').value;
+        var startDate = new Date(document.getElementById('startDate').value);
+        var endDate = new Date(document.getElementById('endDate').value);
+        var totalBudget = parseFloat(document.getElementById('totalBudget').value);
+        var bookedImpressions = parseFloat(document.getElementById('bookedImpressions').value);
+        var bookedCPM = parseFloat(document.getElementById('bookedCPM').value);
+        var currentSpend = parseFloat(document.getElementById('currentSpend').value);
+        var currentImpressions = parseFloat(document.getElementById('currentImpressions').value);
 
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-        }
+        // Calculate pacing percentages
+        var impressionsPacingPercentage = (currentImpressions / bookedImpressions) * 100;
+        var budgetPacingPercentage = (currentSpend / totalBudget) * 100;
 
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+        // Calculate remaining days
+        var currentDate = new Date();
+        var daysElapsed = Math.ceil((currentDate - startDate) / (1000 * 60 * 60 * 24));
+        var totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+        var remainingDays = totalDays - daysElapsed;
 
-        #results {
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
+        // Display results
+        document.getElementById('impressionsPacing').innerText = 'Impressions Pacing Percentage: ' + impressionsPacingPercentage.toFixed(2) + '%';
+        document.getElementById('budgetPacing').innerText = 'Budget Pacing Percentage: ' + budgetPacingPercentage.toFixed(2) + '%';
+        document.getElementById('remainingDays').innerText = 'Remaining Days: ' + remainingDays;
+    }
+</script>
 
-    <h2>Campaign Pacing Tool</h2>
-
-    <label for="campaignName">Campaign Name:</label>
-    <input type="text" id="campaignName" placeholder="Enter campaign name">
-
-    <label for="campaignType">Campaign Type:</label>
-    <select id="campaignType">
-        <option value="Disclosed">Disclosed</option>
-        <option value="Non-Disclosed">Non-Disclosed</option>
-    </select>
-
-    <label for="startDate">Start Date:</label>
-    <input type="date" id="startDate" placeholder="Select start date">
-
-    <label for="endDate">End Date:</label>
-    <input type="date" id="endDate" placeholder="Select end date">
-
-    <label for="totalBudget">Total Budget ($):</label>
-    <input type="number" id="totalBudget" placeholder="Enter total budget">
-
-    <label for="bookedImpressions">Booked Impressions:</label>
-    <input type="number" id="bookedImpressions" placeholder="Enter booked impressions">
-
-    <label for="bookedCPM">Booked CPM ($):</label>
-    <input type="number" id="bookedCPM" placeholder="Enter booked CPM">
-
-    <label for="currentSpend">Current Spend ($):</label>
-    <input type="number" id="currentSpend" placeholder="Enter current spend">
-
-    <label for="currentImpressions">Current Impressions:</label>
-    <input type="number" id="currentImpressions" placeholder="Enter current impressions">
-
-    <button onclick="calculatePacing()">Calculate Pacing</button>
-
-    <div id="results">
-        <h3>Results:</h3>
-        <p id="impressionsPacing">Impressions Pacing Percentage: </p>
-        <p id="budgetPacing">Budget Pacing Percentage: </p>
-        <p id="remainingDays">Remaining Days: </p>
-    </div>
-
-    <script>
-        function calculatePacing() {
-            var campaignName = document.getElementById('campaignName').value;
-            var campaignType = document.getElementById('campaignType').value;
-            var startDate = new Date(document.getElementById('startDate').value);
-            var endDate = new Date(document.getElementById('endDate').value);
-            var totalBudget = parseFloat(document.getElementById('totalBudget').value);
-            var bookedImpressions = parseFloat(document.getElementById('bookedImpressions').value);
-            var bookedCPM = parseFloat(document.getElementById('bookedCPM').value);
-            var currentSpend = parseFloat(document.getElementById('currentSpend').value);
-            var currentImpressions = parseFloat(document.getElementById('currentImpressions').value);
-
-            // Calculate pacing percentages
-            var impressionsPacingPercentage = (currentImpressions / bookedImpressions) * 100;
-            var budgetPacingPercentage = (currentSpend / totalBudget) * 100;
-
-            // Calculate remaining days
-            var currentDate = new Date();
-            var daysElapsed = Math.ceil((currentDate - startDate) / (1000 * 60 * 60 * 24));
-            var totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-            var remainingDays = totalDays - daysElapsed;
-
-            // Display results
-            document.getElementById('impressionsPacing').innerText = 'Impressions Pacing Percentage: ' + impressionsPacingPercentage.toFixed(2) + '%';
-            document.getElementById('budgetPacing').innerText = 'Budget Pacing Percentage: ' + budgetPacingPercentage.toFixed(2) + '%';
-            document.getElementById('remainingDays').innerText = 'Remaining Days: ' + remainingDays;
-        }
-    </script>
-
-</body>
-</html>
+<!-- ... (remaining HTML code) ... -->
