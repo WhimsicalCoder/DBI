@@ -39,8 +39,7 @@ Total Budget
 Total Budget is the overall budget allocated for the campaign.
 Total Days
 Total Days is the total number of days between the start and end dates of the campaign.
-Example
-If a campaign has a total budget of $10,000 and runs for 20 days, the daily budget target would be:
+
 
 
 How to Use
