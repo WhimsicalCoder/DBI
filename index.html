@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Pacing Tool</title>
+    <title>Daily Budget Target Tool</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,7 +37,7 @@
 </head>
 <body>
 
-    <h2>Daily Pacing Tool</h2>
+    <h2>Daily Budget Target Tool</h2>
 
     <label for="campaignName">Campaign Name:</label>
     <input type="text" id="campaignName" placeholder="Enter campaign name">
@@ -51,31 +51,27 @@
     <label for="totalBudget">Total Budget ($):</label>
     <input type="number" id="totalBudget" placeholder="Enter total budget">
 
-    <label for="pacingPeriod">Pacing Period (in days):</label>
-    <input type="number" id="pacingPeriod" placeholder="Enter pacing period in days">
-
-    <button onclick="calculateDailyPacing()">Calculate Daily Pacing</button>
+    <button onclick="calculateDailyBudget()">Calculate Daily Budget Target</button>
 
     <div id="results">
-        <h3>Daily Pacing Results:</h3>
-        <p id="dailyPacingTarget"></p>
+        <h3>Daily Budget Target:</h3>
+        <p id="dailyBudgetTarget"></p>
     </div>
 
     <script>
-        function calculateDailyPacing() {
+        function calculateDailyBudget() {
             var campaignName = document.getElementById('campaignName').value;
             var startDate = new Date(document.getElementById('startDate').value);
             var endDate = new Date(document.getElementById('endDate').value);
             var totalBudget = parseFloat(document.getElementById('totalBudget').value);
-            var pacingPeriod = parseInt(document.getElementById('pacingPeriod').value);
 
-            // Calculate daily pacing
+            // Calculate daily budget
             var totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
             var dailyBudget = totalBudget / totalDays;
 
-            // Display daily pacing target
-            var dailyPacingTarget = document.getElementById('dailyPacingTarget');
-            dailyPacingTarget.innerHTML = `<strong>Daily Budget Target:</strong> $${dailyBudget.toFixed(2)}`;
+            // Display daily budget target
+            var dailyBudgetTarget = document.getElementById('dailyBudgetTarget');
+            dailyBudgetTarget.innerHTML = `<strong>Daily Budget Target:</strong> $${dailyBudget.toFixed(2)}`;
         }
     </script>
 
