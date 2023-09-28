@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campaign Pacing Calculator</title>
+    <title>Campaign Pacing Tool</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,7 +37,13 @@
 </head>
 <body>
 
-    <h2>Campaign Pacing Calculator</h2>
+    <h2>Campaign Pacing Tool</h2>
+
+    <label for="bookedImpressions">Booked Impressions:</label>
+    <input type="number" id="bookedImpressions" placeholder="Enter booked impressions">
+
+    <label for="bookedCPM">Booked CPM ($):</label>
+    <input type="number" id="bookedCPM" placeholder="Enter booked CPM">
 
     <label for="currentSpend">Current Spend ($):</label>
     <input type="number" id="currentSpend" placeholder="Enter current spend">
@@ -45,41 +51,28 @@
     <label for="currentImpressions">Current Impressions:</label>
     <input type="number" id="currentImpressions" placeholder="Enter current impressions">
 
-    <label for="totalBudget">Total Budget ($):</label>
-    <input type="number" id="totalBudget" placeholder="Enter total budget">
-
-    <label for="bookedImpressions">Booked Impressions:</label>
-    <input type="number" id="bookedImpressions" placeholder="Enter booked impressions">
-
-    <label for="bookedCPM">Booked CPM:</label>
-    <input type="number" id="bookedCPM" placeholder="Enter booked CPM">
-
     <button onclick="calculatePacing()">Calculate Pacing</button>
 
     <div id="results">
         <h3>Results:</h3>
-        <p id="budgetPacing">Budget Pacing Percentage: </p>
         <p id="impressionsPacing">Impressions Pacing Percentage: </p>
+        <p id="budgetPacing">Budget Pacing Percentage: </p>
     </div>
 
     <script>
         function calculatePacing() {
-            var currentSpend = parseFloat(document.getElementById('currentSpend').value);
-            var currentImpressions = parseFloat(document.getElementById('currentImpressions').value);
-            var totalBudget = parseFloat(document.getElementById('totalBudget').value);
             var bookedImpressions = parseFloat(document.getElementById('bookedImpressions').value);
             var bookedCPM = parseFloat(document.getElementById('bookedCPM').value);
-
-            // Calculate expected impressions based on current spend and booked CPM
-            var expectedImpressions = (currentSpend / bookedCPM) * 1000;
+            var currentSpend = parseFloat(document.getElementById('currentSpend').value);
+            var currentImpressions = parseFloat(document.getElementById('currentImpressions').value);
 
             // Calculate pacing percentages
-            var budgetPacingPercentage = (currentSpend / totalBudget) * 100;
             var impressionsPacingPercentage = (currentImpressions / bookedImpressions) * 100;
+            var budgetPacingPercentage = (currentSpend / (bookedImpressions / 1000) * bookedCPM) * 100;
 
             // Display results
-            document.getElementById('budgetPacing').innerText = 'Budget Pacing Percentage: ' + budgetPacingPercentage.toFixed(2) + '%';
             document.getElementById('impressionsPacing').innerText = 'Impressions Pacing Percentage: ' + impressionsPacingPercentage.toFixed(2) + '%';
+            document.getElementById('budgetPacing').innerText = 'Budget Pacing Percentage: ' + budgetPacingPercentage.toFixed(2) + '%';
         }
     </script>
 
