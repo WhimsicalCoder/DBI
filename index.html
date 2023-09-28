@@ -54,6 +54,9 @@
     <label for="endDate">End Date:</label>
     <input type="date" id="endDate" placeholder="Select end date">
 
+    <label for="totalBudget">Total Budget ($):</label>
+    <input type="number" id="totalBudget" placeholder="Enter total budget">
+
     <label for="bookedImpressions">Booked Impressions:</label>
     <input type="number" id="bookedImpressions" placeholder="Enter booked impressions">
 
@@ -81,10 +84,28 @@
             var campaignType = document.getElementById('campaignType').value;
             var startDate = new Date(document.getElementById('startDate').value);
             var endDate = new Date(document.getElementById('endDate').value);
+            var totalBudget = parseFloat(document.getElementById('totalBudget').value);
             var bookedImpressions = parseFloat(document.getElementById('bookedImpressions').value);
             var bookedCPM = parseFloat(document.getElementById('bookedCPM').value);
             var currentSpend = parseFloat(document.getElementById('currentSpend').value);
             var currentImpressions = parseFloat(document.getElementById('currentImpressions').value);
 
             // Calculate pacing percentages
-            var impressionsP
+            var impressionsPacingPercentage = (currentImpressions / bookedImpressions) * 100;
+            var budgetPacingPercentage = (currentSpend / totalBudget) * 100;
+
+            // Calculate remaining days
+            var currentDate = new Date();
+            var daysElapsed = Math.ceil((currentDate - startDate) / (1000 * 60 * 60 * 24));
+            var totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+            var remainingDays = totalDays - daysElapsed;
+
+            // Display results
+            document.getElementById('impressionsPacing').innerText = 'Impressions Pacing Percentage: ' + impressionsPacingPercentage.toFixed(2) + '%';
+            document.getElementById('budgetPacing').innerText = 'Budget Pacing Percentage: ' + budgetPacingPercentage.toFixed(2) + '%';
+            document.getElementById('remainingDays').innerText = 'Remaining Days: ' + remainingDays;
+        }
+    </script>
+
+</body>
+</html>
