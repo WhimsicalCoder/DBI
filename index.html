@@ -1,121 +1,131 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Ad Campaign Pacing Tool</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 20px;
+    }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
 
-        input[type="text"], input[type="number"], input[type="date"] {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-        }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
 
-        button {
-            background-color: #007BFF;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-        }
+    th {
+      background-color: #f2f2f2;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    button {
+      padding: 10px;
+      font-size: 16px;
+    }
+  </style>
+  <title>Ad Campaign Pacing Tool</title>
 </head>
 <body>
-    <div class="container">
-        <h2>Ad Campaign Pacing Tool</h2>
-        <form id="campaignForm">
-            <label for="campaignName">Campaign Name:</label>
-            <input type="text" id="campaignName" required><br>
 
-            <label for="campaignType">Campaign Type:</label>
-            <input type="text" id="campaignType" required><br>
+  <h2>Ad Campaign Pacing Tool</h2>
 
-            <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" required><br>
+  <form id="campaignForm">
+    <label for="campaignName">Campaign Name:</label>
+    <input type="text" id="campaignName" required><br>
 
-            <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" required><br>
+    <label for="campaignType">Campaign Type:</label>
+    <input type="text" id="campaignType" required><br>
 
-            <label for="totalBudget">Total Budget ($):</label>
-            <input type="number" id="totalBudget" required><br>
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate" required><br>
 
-            <label for="bookedImpressions">Booked Impressions:</label>
-            <input type="number" id="bookedImpressions" required><br>
+    <label for="endDate">End Date:</label>
+    <input type="date" id="endDate" required><br>
 
-            <label for="cpm">CPM ($):</label>
-            <input type="number" id="cpm" required><br>
+    <label for="totalBudget">Total Budget:</label>
+    <input type="number" id="totalBudget" required><br>
 
-            <label for="currentSpend">Current Spend ($):</label>
-            <input type="number" id="currentSpend" required><br>
+    <label for="bookedImpressions">Booked Impressions:</label>
+    <input type="number" id="bookedImpressions" required><br>
 
-            <label for="currentImpressions">Current Impressions:</label>
-            <input type="number" id="currentImpressions" required><br>
+    <label for="cpm">CPM:</label>
+    <input type="number" id="cpm" required><br>
 
-            <button type="button" onclick="addCampaign()">Add Campaign</button>
-        </form>
+    <button type="button" onclick="recordCampaign()">Record Campaign</button>
+  </form>
 
-        <h2>Current Campaigns</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Campaign Name</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Total Budget</th>
-                    <th>Booked Impressions</th>
-                    <th>CPM</th>
-                    <th>Current Spend</th>
-                    <th>Current Impressions</th>
-                    <th>Current Date</th>
-                    <th>Budget Pace (%)</th>
-                    <th>Expected Impression Pace (%)</th>
-                    <th>Required Impression Pace (%)</th>
-                </tr>
-            </thead>
-            <tbody id="campaignTableBody">
-                <!-- Campaign data will be displayed here -->
-            </tbody>
-        </table>
-    </div>
+  <table id="campaignTable">
+    <tr>
+      <th>Campaign Name</th>
+      <th>Campaign Type</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Total Budget</th>
+      <th>Booked Impressions</th>
+      <th>CPM</th>
+      <th>Current Spend</th>
+      <th>Current Impressions</th>
+      <th>Today's Date</th>
+      <th>Budget Pace (%)</th>
+      <th>Impression Pace (%)</th>
+    </tr>
+  </table>
 
-    <script>
-        function addCampaign() {
-            const campaignName = document.getElementById('campaignName').value;
-            const campaignType = document.getElementById('campaignType').value;
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
-            const totalBudget = parseFloat(document.getElementById('totalBudget').value);
-            const bookedImpressions = parseInt(document.getElementById('bookedImpressions').value);
-            const cpm = parseFloat(document.getElementById('cpm').value);
-            const currentSpend = parseFloat(document.getElementById('currentSpend').value);
-            const currentImpressions = parseInt(document.getElementById('currentImpressions').value);
+  <script>
+    function recordCampaign() {
+      const campaignName = document.getElementById('campaignName').value;
+      const campaignType = document.getElementById('campaignType').value;
+      const startDate = document.getElementById('startDate').value;
+      const endDate = document.getElementById('endDate').value;
+      const totalBudget = parseFloat(document.getElementById('totalBudget').value);
+      const bookedImpressions = parseInt(document.getElementById('bookedImpressions').value);
+      const cpm = parseFloat(document.getElementById('cpm').value);
 
-            // Calculate today's date
-            const today = new Date().toISOString().split('T')[0];
+      const currentDate = new Date().toISOString().split('T')[0];
+      const currentSpend = parseFloat(prompt('Enter current spend:'));
+      const currentImpressions = parseInt(prompt('Enter current impressions:'));
 
-            // Calculate the number of days elapsed
-            const startDateObj = new Date(startDate
+      const daysLeft = Math.ceil((new Date(endDate) - new Date(currentDate)) / (1000 * 60 * 60 * 24));
+
+      const spendToDate = currentSpend * 1000 / cpm;
+      const impressionsToDate = currentImpressions;
+
+      const necessaryDailyBudget = (totalBudget - spendToDate) / daysLeft;
+      const budgetPace = (currentSpend / necessaryDailyBudget) * 100;
+
+      const necessaryDailyImpressions = (bookedImpressions - impressionsToDate) / daysLeft;
+      const impressionPace = (currentImpressions / necessaryDailyImpressions) * 100;
+
+      const table = document.getElementById('campaignTable');
+      const row = table.insertRow(1);
+      const cells = [
+        campaignName,
+        campaignType,
+        startDate,
+        endDate,
+        totalBudget,
+        bookedImpressions,
+        cpm,
+        currentSpend,
+        currentImpressions,
+        currentDate,
+        budgetPace.toFixed(2),
+        impressionPace.toFixed(2)
+      ];
+
+      cells.forEach((value, index) => {
+        const cell = row.insertCell(index);
+        cell.innerHTML = value;
+      });
+    }
+  </script>
+
+</body>
+</html>
