@@ -33,15 +33,6 @@
         #results {
             margin-top: 20px;
         }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            margin-bottom: 10px;
-        }
     </style>
 </head>
 <body>
@@ -61,4 +52,33 @@
     <input type="number" id="totalBudget" placeholder="Enter total budget">
 
     <label for="pacingPeriod">Pacing Period (in days):</label>
-    <input type="number" id="pacingPeriod" placeholder="
+    <input type="number" id="pacingPeriod" placeholder="Enter pacing period in days">
+
+    <button onclick="calculateDailyPacing()">Calculate Daily Pacing</button>
+
+    <div id="results">
+        <h3>Daily Pacing Results:</h3>
+        <p id="dailyPacingTarget"></p>
+    </div>
+
+    <script>
+        function calculateDailyPacing() {
+            var campaignName = document.getElementById('campaignName').value;
+            var startDate = new Date(document.getElementById('startDate').value);
+            var endDate = new Date(document.getElementById('endDate').value);
+            var totalBudget = parseFloat(document.getElementById('totalBudget').value);
+            var pacingPeriod = parseInt(document.getElementById('pacingPeriod').value);
+
+            // Calculate daily pacing
+            var totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+            var dailyBudget = totalBudget / totalDays;
+            var dailyImpressionsTarget = totalBudget / pacingPeriod;
+
+            // Display daily pacing target
+            var dailyPacingTarget = document.getElementById('dailyPacingTarget');
+            dailyPacingTarget.innerHTML = `<strong>Daily Budget Target:</strong> $${dailyBudget.toFixed(2)}`;
+        }
+    </script>
+
+</body>
+</html>
