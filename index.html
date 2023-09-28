@@ -15,7 +15,7 @@
             margin-bottom: 5px;
         }
 
-        input {
+        input, select {
             width: 100%;
             padding: 8px;
             margin-bottom: 15px;
@@ -38,6 +38,15 @@
 <body>
 
     <h2>Campaign Pacing Tool</h2>
+
+    <label for="campaignName">Campaign Name:</label>
+    <input type="text" id="campaignName" placeholder="Enter campaign name">
+
+    <label for="campaignType">Campaign Type:</label>
+    <select id="campaignType">
+        <option value="CPM">CPM</option>
+        <option value="CPC">CPC</option>
+    </select>
 
     <label for="startDate">Start Date:</label>
     <input type="date" id="startDate" placeholder="Select start date">
@@ -68,6 +77,8 @@
 
     <script>
         function calculatePacing() {
+            var campaignName = document.getElementById('campaignName').value;
+            var campaignType = document.getElementById('campaignType').value;
             var startDate = new Date(document.getElementById('startDate').value);
             var endDate = new Date(document.getElementById('endDate').value);
             var bookedImpressions = parseFloat(document.getElementById('bookedImpressions').value);
@@ -76,21 +87,4 @@
             var currentImpressions = parseFloat(document.getElementById('currentImpressions').value);
 
             // Calculate pacing percentages
-            var impressionsPacingPercentage = (currentImpressions / bookedImpressions) * 100;
-            var budgetPacingPercentage = (currentSpend / (bookedImpressions / 1000) * bookedCPM) * 100;
-
-            // Calculate remaining days
-            var currentDate = new Date();
-            var daysElapsed = Math.ceil((currentDate - startDate) / (1000 * 60 * 60 * 24));
-            var totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-            var remainingDays = totalDays - daysElapsed;
-
-            // Display results
-            document.getElementById('impressionsPacing').innerText = 'Impressions Pacing Percentage: ' + impressionsPacingPercentage.toFixed(2) + '%';
-            document.getElementById('budgetPacing').innerText = 'Budget Pacing Percentage: ' + budgetPacingPercentage.toFixed(2) + '%';
-            document.getElementById('remainingDays').innerText = 'Remaining Days: ' + remainingDays;
-        }
-    </script>
-
-</body>
-</html>
+            var impressionsP
