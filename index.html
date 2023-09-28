@@ -3,127 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campaign Budget Calculator</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: Arial, sans-serif;
       margin: 20px;
     }
 
-    table {
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input {
       width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
-
-    th, td {
-      border: 1px solid #ddd;
       padding: 8px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #f2f2f2;
+      margin-bottom: 10px;
     }
 
     button {
       padding: 10px;
-      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #result {
+      margin-top: 20px;
     }
   </style>
-  <title>Ad Campaign Pacing Tool</title>
 </head>
 <body>
 
-  <h2>Ad Campaign Pacing Tool</h2>
+  <h2>Campaign Budget Calculator</h2>
 
-  <form id="campaignForm">
-    <label for="campaignName">Campaign Name:</label>
-    <input type="text" id="campaignName" required><br>
+  <label for="spendToDate">Spend to Date ($):</label>
+  <input type="number" id="spendToDate" placeholder="Enter spend to date">
 
-    <label for="campaignType">Campaign Type:</label>
-    <input type="text" id="campaignType" required><br>
+  <label for="totalBudget">Total Budget ($):</label>
+  <input type="number" id="totalBudget" placeholder="Enter total budget">
 
-    <label for="startDate">Start Date:</label>
-    <input type="date" id="startDate" required><br>
+  <label for="yesterdaySpend">Yesterday's Spend ($):</label>
+  <input type="number" id="yesterdaySpend" placeholder="Enter yesterday's spend">
 
-    <label for="endDate">End Date:</label>
-    <input type="date" id="endDate" required><br>
+  <label for="impsToDate">Impressions to Date:</label>
+  <input type="number" id="impsToDate" placeholder="Enter impressions to date">
 
-    <label for="totalBudget">Total Budget:</label>
-    <input type="number" id="totalBudget" required><br>
+  <label for="daysLeft">Days Left in Flight:</label>
+  <input type="number" id="daysLeft" placeholder="Enter days left in flight">
 
-    <label for="bookedImpressions">Booked Impressions:</label>
-    <input type="number" id="bookedImpressions" required><br>
+  <button onclick="calculateBudget()">Calculate</button>
 
-    <label for="cpm">CPM:</label>
-    <input type="number" id="cpm" required><br>
-
-    <button type="button" onclick="recordCampaign()">Record Campaign</button>
-  </form>
-
-  <table id="campaignTable">
-    <tr>
-      <th>Campaign Name</th>
-      <th>Campaign Type</th>
-      <th>Start Date</th>
-      <th>End Date</th>
-      <th>Total Budget</th>
-      <th>Booked Impressions</th>
-      <th>CPM</th>
-      <th>Current Spend</th>
-      <th>Current Impressions</th>
-      <th>Today's Date</th>
-      <th>Budget Pace (%)</th>
-      <th>Impression Pace (%)</th>
-    </tr>
-  </table>
+  <div id="result"></div>
 
   <script>
-    function recordCampaign() {
-      const campaignName = document.getElementById('campaignName').value;
-      const campaignType = document.getElementById('campaignType').value;
-      const startDate = document.getElementById('startDate').value;
-      const endDate = document.getElementById('endDate').value;
+    function calculateBudget() {
+      const spendToDate = parseFloat(document.getElementById('spendToDate').value);
       const totalBudget = parseFloat(document.getElementById('totalBudget').value);
-      const bookedImpressions = parseInt(document.getElementById('bookedImpressions').value);
-      const cpm = parseFloat(document.getElementById('cpm').value);
+      const yesterdaySpend = parseFloat(document.getElementById('yesterdaySpend').value);
+      const impsToDate = parseFloat(document.getElementById('impsToDate').value);
+      const daysLeft = parseFloat(document.getElementById('daysLeft').value);
 
-      const currentDate = new Date().toISOString().split('T')[0];
-      const currentSpend = parseFloat(prompt('Enter current spend:'));
-      const currentImpressions = parseInt(prompt('Enter current impressions:'));
+      const spendToImps = spendToDate * 1000 / impsToDate;
+      const totalImpBudget = totalBudget * 1000 / spendToImps;
+      const necessaryDailyBudget = (totalImpBudget - spendToDate) / daysLeft;
+      const deliveryComparison = necessaryDailyBudget - yesterdaySpend;
 
-      const daysLeft = Math.ceil((new Date(endDate) - new Date(currentDate)) / (1000 * 60 * 60 * 24));
-
-      const spendToDate = currentSpend * 1000 / cpm;
-      const impressionsToDate = currentImpressions;
-
-      const necessaryDailyBudget = (totalBudget - spendToDate) / daysLeft;
-      const budgetPace = (currentSpend / necessaryDailyBudget) * 100;
-
-      const necessaryDailyImpressions = (bookedImpressions - impressionsToDate) / daysLeft;
-      const impressionPace = (currentImpressions / necessaryDailyImpressions) * 100;
-
-      const table = document.getElementById('campaignTable');
-      const row = table.insertRow(1);
-      const cells = [
-        campaignName,
-        campaignType,
-        startDate,
-        endDate,
-        totalBudget,
-        bookedImpressions,
-        cpm,
-        currentSpend,
-        currentImpressions,
-        currentDate,
-        budgetPace.toFixed(2),
-        impressionPace.toFixed(2)
-      ];
-
-      cells.forEach((value, index) => {
-        const cell = row.insertCell(index);
-        cell.innerHTML = value;
-      });
+      const resultElement = document.getElementById('result');
+      resultElement.innerHTML = `
+        <p>Spend to Impressions ratio: ${spendToImps.toFixed(2)}</p>
+        <p>Necessary Daily Budget to Deliver in Full: $${necessaryDailyBudget.toFixed(2)}</p>
+        <p>Comparison with Yesterday's Delivery: $${deliveryComparison.toFixed(2)}</p>
+      `;
     }
   </script>
 
