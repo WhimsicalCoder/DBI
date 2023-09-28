@@ -1,87 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Campaign Budget Calculator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Pacing Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
 
-    label {
-      display: block;
-      margin-bottom: 5px;
-    }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
 
-    input {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-    }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+        }
 
-    button {
-      padding: 10px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-    button:hover {
-      background-color: #45a049;
-    }
-
-    #result {
-      margin-top: 20px;
-    }
-  </style>
+        #results {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
 
-  <h2>Campaign Budget Calculator</h2>
+    <h2>Campaign Pacing Calculator</h2>
 
-  <label for="spendToDate">Spend to Date ($):</label>
-  <input type="number" id="spendToDate" placeholder="Enter spend to date">
+    <label for="currentSpend">Current Spend ($):</label>
+    <input type="number" id="currentSpend" placeholder="Enter current spend">
 
-  <label for="totalBudget">Total Budget ($):</label>
-  <input type="number" id="totalBudget" placeholder="Enter total budget">
+    <label for="currentImpressions">Current Impressions:</label>
+    <input type="number" id="currentImpressions" placeholder="Enter current impressions">
 
-  <label for="yesterdaySpend">Yesterday's Spend ($):</label>
-  <input type="number" id="yesterdaySpend" placeholder="Enter yesterday's spend">
+    <button onclick="calculatePacing()">Calculate Pacing</button>
 
-  <label for="impsToDate">Impressions to Date:</label>
-  <input type="number" id="impsToDate" placeholder="Enter impressions to date">
+    <div id="results">
+        <h3>Results:</h3>
+        <p id="budgetPacing">Budget Pacing Percentage: </p>
+        <p id="impressionsPacing">Impressions Pacing Percentage: </p>
+    </div>
 
-  <label for="daysLeft">Days Left in Flight:</label>
-  <input type="number" id="daysLeft" placeholder="Enter days left in flight">
+    <script>
+        function calculatePacing() {
+            var currentSpend = parseFloat(document.getElementById('currentSpend').value);
+            var currentImpressions = parseFloat(document.getElementById('currentImpressions').value);
+            var totalBudget = 10000; // Set your total budget here
+            var bookedCPM = 2; // Set your booked CPM here
 
-  <button onclick="calculateBudget()">Calculate</button>
+            // Calculate expected impressions based on current spend and booked CPM
+            var expectedImpressions = (currentSpend / bookedCPM) * 1000;
 
-  <div id="result"></div>
+            // Calculate pacing percentages
+            var budgetPacingPercentage = (currentSpend / totalBudget) * 100;
+            var impressionsPacingPercentage = (currentImpressions / expectedImpressions) * 100;
 
-  <script>
-    function calculateBudget() {
-      const spendToDate = parseFloat(document.getElementById('spendToDate').value);
-      const totalBudget = parseFloat(document.getElementById('totalBudget').value);
-      const yesterdaySpend = parseFloat(document.getElementById('yesterdaySpend').value);
-      const impsToDate = parseFloat(document.getElementById('impsToDate').value);
-      const daysLeft = parseFloat(document.getElementById('daysLeft').value);
-
-      const spendToImps = spendToDate * 1000 / impsToDate;
-      const totalImpBudget = totalBudget * 1000 / spendToImps;
-      const necessaryDailyBudget = (totalImpBudget - spendToDate) / daysLeft;
-      const deliveryComparison = necessaryDailyBudget - yesterdaySpend;
-
-      const resultElement = document.getElementById('result');
-      resultElement.innerHTML = `
-        <p>Spend to Impressions ratio: ${spendToImps.toFixed(2)}</p>
-        <p>Necessary Daily Budget to Deliver in Full: $${necessaryDailyBudget.toFixed(2)}</p>
-        <p>Comparison with Yesterday's Delivery: $${deliveryComparison.toFixed(2)}</p>
-      `;
-    }
-  </script>
+            // Display results
+            document.getElementById('budgetPacing').innerText = 'Budget Pacing Percentage: ' + budgetPacingPercentage.toFixed(2) + '%';
+            document.getElementById('impressionsPacing').innerText = 'Impressions Pacing Percentage: ' + impressionsPacingPercentage.toFixed(2) + '%';
+        }
+    </script>
 
 </body>
 </html>
