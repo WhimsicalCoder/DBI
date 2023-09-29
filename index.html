@@ -1,60 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ad Campaign Pacing Tool</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Campaign Pacing Tool</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Ad Campaign Pacing Tool</h1>
-        <form>
-            <label for="campaign-name">Campaign Name:</label>
-            <input type="text" id="campaign-name" required>
+    <h1>Campaign Pacing Tool</h1>
 
-            <label for="total-budget">Total Budget:</label>
-            <input type="number" id="total-budget" required>
+    <form id="pacingForm">
+        <label for="historicalData">Historical Data (Comma-separated daily impressions):</label>
+        <input type="text" id="historicalData" placeholder="e.g., 10000,12000,9500,11000,10500" required>
+        
+        <label for="requiredImpressions">Required Impressions:</label>
+        <input type="number" id="requiredImpressions" required>
+        
+        <label for="totalBudget">Total Campaign Budget:</label>
+        <input type="number" id="totalBudget" required>
+        
+        <button type="button" onclick="calculatePacing()">Calculate</button>
+    </form>
 
-            <label for="booked-impression">Booked Impression:</label>
-            <input type="number" id="booked-impression" required>
+    <p id="result"></p>
 
-            <label for="cpm">CPM (Cost Per 1,000 Impressions):</label>
-            <input type="number" id="cpm" required>
-
-            <label for="start-date">Start Date:</label>
-            <input type="date" id="start-date" required>
-
-            <label for="end-date">End Date:</label>
-            <input type="date" id="end-date" required>
-
-            <button type="button" onclick="calculatePacing()">Calculate</button>
-        </form>
-
-        <div id="result">
-            <!-- Pacing results will be displayed here -->
-        </div>
-    </div>
-    
     <script>
         function calculatePacing() {
-            const campaignName = document.getElementById("campaign-name").value;
-            const totalBudget = parseFloat(document.getElementById("total-budget").value);
-            const bookedImpression = parseFloat(document.getElementById("booked-impression").value);
-            const cpm = parseFloat(document.getElementById("cpm").value);
-            const startDate = new Date(document.getElementById("start-date").value);
-            const endDate = new Date(document.getElementById("end-date").value);
+            const historicalData = document.getElementById("historicalData").value.split(",").map(Number);
+            const requiredImpressions = parseInt(document.getElementById("requiredImpressions").value);
+            const totalBudget = parseFloat(document.getElementById("totalBudget").value);
 
-            const totalDays = Math.round((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
-            const dailyBudget = (totalBudget / totalDays).toFixed(2);
-            const dailyImpressions = Math.round(bookedImpression / totalDays);
+            const totalImpressions = historicalData.reduce((a, b) => a + b, 0);
+            const historicalDays = historicalData.length;
+            const averageDailyImpressions = totalImpressions / historicalDays;
+            const remainingDays = requiredImpressions / averageDailyImpressions;
+            const budgetPerDay = totalBudget / historicalDays;
+            const requiredBudget = budgetPerDay * remainingDays;
 
-            const result = document.getElementById("result");
-            result.innerHTML = `Campaign Name: ${campaignName}<br>
-                Daily Budget: $${dailyBudget}<br>
-                Daily Impressions: ${dailyImpressions}`;
-
-            result.style.display = "block";
+            const result = `To deliver ${requiredImpressions} impressions, you'll need a budget of $${requiredBudget.toFixed(2)}.`;
+            document.getElementById("result").textContent = result;
         }
     </script>
 </body>
