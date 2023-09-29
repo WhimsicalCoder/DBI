@@ -1,128 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Ad Campaign Pacing Tool</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        table, th, td {
-            border: 1px solid #ccc;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-    </style>
+    <title>Campaign Pacing Tool</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Ad Campaign Pacing Tool</h1>
-        <label for="campaignName">Campaign Name:</label>
-        <input type="text" id="campaignName" placeholder="Campaign Name">
+    <h1>Campaign Pacing Tool</h1>
 
-        <label for="campaignType">Campaign Type:</label>
-        <input type="text" id="campaignType" placeholder="Campaign Type">
-
-        <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate">
-
-        <label for="endDate">End Date:</label>
-        <input type="date" id="endDate">
-
+    <form id="pacingForm">
         <label for="totalBudget">Total Budget ($):</label>
-        <input type="number" id="totalBudget" placeholder="Total Budget">
+        <input type="number" id="totalBudget" required>
+        
+        <label for="totalImpressions">Total Impressions:</label>
+        <input type="number" id="totalImpressions" required>
+        
+        <label for="cpm">CPM ($ per 1000 Impressions):</label>
+        <input type="number" id="cpm" required>
+        
+        <button type="button" onclick="calculatePacing()">Calculate</button>
+    </form>
 
-        <label for="bookedImpressions">Booked Impressions:</label>
-        <input type="number" id="bookedImpressions" placeholder="Booked Impressions">
-
-        <label for="currentSpend">Current Spend ($):</label>
-        <input type="number" id="currentSpend" placeholder="Current Spend">
-
-        <label for="currentImpressions">Current Impressions:</label>
-        <input type="number" id="currentImpressions" placeholder="Current Impressions">
-
-        <button id="calculatePace">Calculate Pacing</button>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Campaign Name</th>
-                    <th>Campaign Type</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Total Budget ($)</th>
-                    <th>Booked Impressions</th>
-                    <th>Today's Budget Pace (%)</th>
-                    <th>Today's Impression Pace (%)</th>
-                </tr>
-            </thead>
-            <tbody id="campaignData">
-                <!-- Campaign data will be displayed here -->
-            </tbody>
-        </table>
-    </div>
+    <p id="result"></p>
 
     <script>
-        document.getElementById('calculatePace').addEventListener('click', function() {
-            const campaignName = document.getElementById('campaignName').value;
-            const campaignType = document.getElementById('campaignType').value;
-            const startDate = new Date(document.getElementById('startDate').value);
-            const endDate = new Date(document.getElementById('endDate').value);
-            const totalBudget = parseFloat(document.getElementById('totalBudget').value);
-            const bookedImpressions = parseFloat(document.getElementById('bookedImpressions').value);
-            const currentSpend = parseFloat(document.getElementById('currentSpend').value);
-            const currentImpressions = parseFloat(document.getElementById('currentImpressions').value);
+        function calculatePacing() {
+            const totalBudget = parseFloat(document.getElementById("totalBudget").value);
+            const totalImpressions = parseInt(document.getElementById("totalImpressions").value);
+            const cpm = parseFloat(document.getElementById("cpm").value);
 
-            if (!campaignName || !campaignType || isNaN(totalBudget) || isNaN(bookedImpressions) || isNaN(startDate) || isNaN(endDate) || isNaN(currentSpend) || isNaN(currentImpressions)) {
-                alert('Please fill in all the fields with valid data.');
-                return;
-            }
+            // Calculate the required budget and impressions
+            const requiredBudget = (totalImpressions / 1000) * cpm;
+            const requiredImpressions = (totalBudget / cpm) * 1000;
 
-            const todayDate = new Date();
-            const daysElapsed = (todayDate - startDate) / (1000 * 60 * 60 * 24);
-            const budgetPace = (currentSpend / totalBudget) * 100;
-            const impressionPace = (currentImpressions / bookedImpressions) * 100;
-
-            const campaignData = document.getElementById('campaignData');
-            const newRow = campaignData.insertRow(-1);
-            newRow.innerHTML = `
-                <td>${campaignName}</td>
-                <td>${campaignType}</td>
-                <td>${startDate.toDateString()}</td>
-                <td>${endDate.toDateString()}</td>
-                <td>$${totalBudget.toFixed(2)}</td>
-                <td>${bookedImpressions}</td>
-                <td>${budgetPace.toFixed(2)}%</td>
-                <td>${impressionPace.toFixed(2)}%</td>
-            `;
-
-            // Clear input fields
-            document.getElementById('campaignName').value = '';
-            document.getElementById('campaignType').value = '';
-            document.getElementById('startDate').value = '';
-            document.getElementById('endDate').value = '';
-            document.getElementById('totalBudget').value = '';
-            document.getElementById('bookedImpressions').value = '';
-            document.getElementById('currentSpend').value = '';
-            document.getElementById('currentImpressions').value = '';
-        });
+            const result = `To deliver ${totalImpressions} impressions, you'll need a budget of $${requiredBudget.toFixed(2)}.<br>
+                            To spend ${totalBudget} dollars, you'll get ${requiredImpressions} impressions.`;
+            document.getElementById("result").innerHTML = result;
+        }
     </script>
 </body>
 </html>
