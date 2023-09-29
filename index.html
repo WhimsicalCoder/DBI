@@ -15,6 +15,12 @@
         
         <label for="cpm">CPM ($ per 1000 Impressions):</label>
         <input type="number" id="cpm" required>
+
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" required>
+
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" required>
         
         <button type="button" onclick="calculatePacing()">Calculate</button>
     </form>
@@ -26,13 +32,18 @@
             const totalBudget = parseFloat(document.getElementById("totalBudget").value);
             const totalImpressions = parseInt(document.getElementById("totalImpressions").value);
             const cpm = parseFloat(document.getElementById("cpm").value);
+            const startDate = new Date(document.getElementById("startDate").value);
+            const endDate = new Date(document.getElementById("endDate").value);
 
-            // Calculate the required budget and impressions
-            const requiredBudget = (totalImpressions / 1000) * cpm;
-            const requiredImpressions = (totalBudget / cpm) * 1000;
+            const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)); // Calculate the number of days
 
-            const result = `To deliver ${totalImpressions} impressions, you'll need a budget of $${requiredBudget.toFixed(2)}.<br>
-                            To spend ${totalBudget} dollars, you'll get ${requiredImpressions} impressions.`;
+            // Calculate the required daily budget and impressions
+            const requiredBudgetPerDay = totalBudget / days;
+            const requiredImpressionsPerDay = totalImpressions / days;
+
+            const result = `To evenly deliver between ${startDate.toDateString()} and ${endDate.toDateString()}, you'll need:<br>
+                            Daily Budget: $${requiredBudgetPerDay.toFixed(2)}<br>
+                            Daily Impressions: ${requiredImpressionsPerDay.toFixed(0)}`;
             document.getElementById("result").innerHTML = result;
         }
     </script>
