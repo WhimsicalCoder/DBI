@@ -16,8 +16,8 @@
             <label for="total-budget">Total Budget:</label>
             <input type="number" id="total-budget" required>
 
-            <label for="booked-impression">Booked Impression:</label>
-            <input type="number" id="booked-impression" required>
+            <label for="desired-impressions">Desired Impressions (in 1,000s):</label>
+            <input type="number" id="desired-impressions" required>
 
             <label for="cpm">CPM (Cost Per 1,000 Impressions):</label>
             <input type="number" id="cpm" required>
@@ -37,5 +37,31 @@
     </div>
     
     <script src="script.js"></script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("campaign-form");
+    const result = document.getElementById("result");
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const campaignName = document.getElementById("campaign-name").value;
+        const totalBudget = parseFloat(document.getElementById("total-budget").value);
+        const desiredImpressions = parseFloat(document.getElementById("desired-impressions").value);
+        const cpm = parseFloat(document.getElementById("cpm").value);
+        const startDate = new Date(document.getElementById("start-date").value);
+        const endDate = new Date(document.getElementById("end-date").value);
+
+        const totalDays = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1;
+        const dailyBudget = (totalBudget / totalDays).toFixed(2);
+        const dailyImpressions = (desiredImpressions * 1000 / totalDays).toFixed(2);
+
+        result.innerHTML = `Campaign Name: ${campaignName}<br>
+            Daily Budget: $${dailyBudget}<br>
+            Daily Impressions: ${dailyImpressions}`;
+
+        result.style.display = "block";
+    });
+});
+
 </body>
 </html>
