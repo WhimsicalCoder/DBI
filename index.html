@@ -35,7 +35,8 @@
             const startDate = new Date(document.getElementById("startDate").value);
             const endDate = new Date(document.getElementById("endDate").value);
 
-            const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)); // Calculate the number of days
+            const oneDay = 1000 * 60 * 60 * 24; // One day in milliseconds
+            const days = Math.floor((endDate - startDate) / oneDay) + 1; // Calculate the exact number of days
 
             // Calculate the required daily budget and impressions
             const requiredBudgetPerDay = totalBudget / days;
